@@ -22,7 +22,7 @@ spec:
         app: myapp
     spec:
       containers:
-      - name: nginx
+      - name: myapp
         image: "{{ .Values.image.repository }}"
         ports:
         - containerPort: 8000
