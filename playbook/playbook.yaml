@@ -1,0 +1,37 @@
+- name: create user 
+  hosts: test
+  become: true
+  vars:
+    myuser: "cloudru"
+    mypassword: "cloudpass"
+    sshd_config_file: /etc/ssh/sshd_config
+
+  tasks:
+    - name: set password
+      ansible.builtin.user:
+        name: "{{ myuser }}"
+        state: present
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+        password: "{{ mypassword | password_hash('sha512') }}"
+
+    - name: Set authorized key taken from file
+      ansible.posix.authorized_key:
+        user: cloudru
+        state: present
+        key: "{{ lookup('file', './cloudru.pub') }}"     
+    
+    - name: Disable root login
+      lineinfile:
+        path: "{{ sshd_config_file }}"
+        regexp: "^PermitRootLogin"
+        line: "PermitRootLogin no"
+        backup: yes
+      notify: restart sshd
+        
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted        

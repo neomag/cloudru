@@ -1,0 +1,4 @@
+image:
+  repository: neomag/cloudru
+AUTHOR: "neomag"
+replicaCount: 4
