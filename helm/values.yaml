@@ -1,4 +1,4 @@
 image:
   repository: neomag/cloudru
 AUTHOR: "neomag"
-replicaCount: 3
+replicaCount: 3 
